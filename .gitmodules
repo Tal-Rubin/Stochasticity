@@ -1,0 +1,3 @@
+[submodule "loopp"]
+	path = loopp
+	url = git@bitbucket.org:iochs/loopp.git
