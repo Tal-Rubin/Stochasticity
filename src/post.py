@@ -72,6 +72,7 @@ def plot(num):
     plt.scatter(Y_t_num+2*np.pi,rho_t_num, s=0.1)
   plt.suptitle("$\\alpha$ = {}, $\\omega$ = {}".format(header[1], header[2]))
   plt.xlim(0,2*np.pi)
+  plt.ylim(0,1.3)
   plt.xlabel("Y")
   plt.ylabel("$\\rho$")
   plt.tight_layout()
@@ -93,7 +94,7 @@ if __name__=='__main__':
   rho0 = 0.2
   theta0 = 0 
 
-  alpha = 0.04+0.04
+  alpha = 0.13
   dimless_wave_freq = 0.19000001
 
   B0 = 10
@@ -107,7 +108,7 @@ if __name__=='__main__':
   theta_sample = -np.pi/2
 
   initial_conditions = []
-  rho_step = 0.02
+  rho_step = 0.03
   Y_step = 0
   for i in range(6):
     initial_conditions.append({'rho':rho0+i*rho_step,'Y':1+i*Y_step, 'id_num':i})

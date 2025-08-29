@@ -85,7 +85,7 @@ int main( int argc, char * argv []) {
              x[0], x[1], x[2], v[0], v[1], v[2],
               (v[0]+A[0]), (v[1]+A[1]), (v[2]+A[2]),
               rho0, theta0, Y0);
-  for (unsigned long int i = 0; i*dt<1e4; i++) {
+  for (unsigned long int i = 0; i*dt<2*1e4; i++) {
   //  if (i % (tstep_fac * print_fac) == 0) {
       particle.getX(position);
       particle.getV(velocity);
