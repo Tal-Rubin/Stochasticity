@@ -16,7 +16,7 @@ int main( int argc, char * argv []) {
   int i = 1;
   int NIonSpecies= atoi(argv[i++]);
   double alpha = atof(argv[i++]);             
-  double dimless_wave_freq = atof(argv[i++]);          // dimensinless E times B velocity  = v k_y/ omega_{ca}
+  double dimless_wave_freq = atof(argv[i++]);
   double B0 = atof(argv[i++]); 
   double theta_sample = atof(argv[i++]);   
   int species_index = atoi(argv[i++]);    // index of speacies "a"
@@ -25,14 +25,15 @@ int main( int argc, char * argv []) {
   int tstep_fac = atoi(argv[i++]);
 //  int print_fac = atoi(argv[i++]);
    
-  // cartesian coordinates
-  double x[3];
-  double v[3];
+
   double X0 = atof(argv[i++]);
   double Y0 = atof(argv[i++]);
   double rho0 = atof(argv[i++]);
   double theta0 = atof(argv[i++]);
 
+  // cartesian coordinates
+  double x[3];
+  double v[3];
 
   std::vector<Ion> ions;
   for(int j=0; j<NIonSpecies; j++) {
@@ -76,15 +77,16 @@ int main( int argc, char * argv []) {
   particle.setV(v[0], v[1], v[2]);
   old_theta = theta0;
 
-
-   fprintf(stderr,"Y0 = %f\n",std::fmod(x[1] + rho0 * sin(theta0), 2*M_PI));
-
   double dt = M_PI / (100*tstep_fac);
-   //double dt = 1e-9;
+  i=0;
+  new_theta =   atan2(- (v[0]+A[0]),x[0] - (v[1]+A[1]));
+  rho = sqrt(pow(v[0]+A[0],2) + pow(x[0] - (v[1]+A[1]),2));
+  Y  = std::fmod(x[1] + rho * sin(new_theta), 2*M_PI);
+  fprintf(stderr,"Y0 = %22.15e\n", Y);
   printf("%10u %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e\n", 0, i*dt,
              x[0], x[1], x[2], v[0], v[1], v[2],
               (v[0]+A[0]), (v[1]+A[1]), (v[2]+A[2]),
-              rho0, theta0, Y0);
+              rho, new_theta, Y);
   for (unsigned long int i = 0; i*dt<2*1e4; i++) {
   //  if (i % (tstep_fac * print_fac) == 0) {
       particle.getX(position);
@@ -95,7 +97,7 @@ int main( int argc, char * argv []) {
       rho = sqrt(pow(velocity[0]+A[0],2) + pow(position[0] - (velocity[1]+A[1]),2));
       Y  = std::fmod(position[1]-dimless_wave_freq * i*dt + rho * sin(new_theta), 2*M_PI);
         
-      if (old_theta < -theta_sample && new_theta >= -theta_sample) {
+      if (old_theta < theta_sample && new_theta >= theta_sample) {
         printf("%10u %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e %22.15e\n", 0, i*dt,
              position[0], position[1], position[2], velocity[0], velocity[1], velocity[2],
               (velocity[0]+A[0]), (velocity[1]+A[1]), (velocity[2]+A[2]),
